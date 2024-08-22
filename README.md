@@ -4,8 +4,8 @@ This project is a Discord bot for the ISC Alumni server of the HE-Arc. It helps 
 
 ## Environment used
 
--   Node.js v20.10.0
--   NPM v10.2.4
+-   Node.js v22.6.0
+-   NPM v10.8.2
 
 ## Required environment variables
 
