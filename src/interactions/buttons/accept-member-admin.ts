@@ -20,17 +20,18 @@ export const acceptMemberAdminId = "acceptMemberAdmin";
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 export const execute = async (interaction: ButtonInteraction) => {
+    // Load all members
+    await interaction.guild?.members.fetch();
+
     // Get informations
     const memberId = interaction.message.embeds[0].fields[1].value;
-    const member = await interaction.guild?.members.fetch(memberId);
+    const member = interaction.guild?.members.cache.get(memberId);
     const owner = interaction.member as GuildMember;
 
     // Get initial owner
     const regex = /<@(\d+)>/;
     const initialOwnerId = regex.exec(interaction.message.content)?.[1];
-    const initialOwner = await interaction.guild?.members.fetch(
-        initialOwnerId!
-    );
+    const initialOwner = interaction.guild?.members.cache.get(initialOwnerId!);
 
     // Check if interaction's owner is responsable or admin
     if (!owner.isAdmin()) {

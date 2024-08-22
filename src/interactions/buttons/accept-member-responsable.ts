@@ -20,9 +20,12 @@ export const acceptMemberResponsableId = "acceptMemberResponsable";
 \* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 export const execute = async (interaction: ButtonInteraction) => {
+    // Load all members
+    await interaction.guild?.members.fetch();
+
     // Get informations
     const memberId = interaction.message.embeds[0].fields[1].value;
-    const member = await interaction.guild?.members.fetch(memberId);
+    const member = interaction.guild?.members.cache.get(memberId);
     const owner = interaction.member as GuildMember;
     const promotionYear = parseInt(
         interaction.message.embeds[0].fields[2].value

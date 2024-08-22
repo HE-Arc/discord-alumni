@@ -3,8 +3,6 @@ import * as acceptMemberResponsable from "./buttons/accept-member-responsable.js
 import * as rejectMemberAdmin from "./buttons/reject-member-admin.js";
 import * as rejectMemberResponsable from "./buttons/reject-member-responsable.js";
 
-import * as test from "./commands/test.js";
-
 /* * * * * * * * * * * * * * * *\
 |*           EXPORTS           *|
 \* * * * * * * * * * * * * * * */
@@ -16,6 +14,4 @@ export const buttons = {
     rejectMemberResponsable: rejectMemberResponsable,
 };
 
-export const commands = {
-    test: test,
-};
+export const commands = {};

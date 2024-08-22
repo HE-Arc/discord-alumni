@@ -8,7 +8,6 @@ import {
     CacheType,
     Client,
     Collection,
-    CommandInteraction,
     GatewayIntentBits,
     GuildMember,
     Interaction,
@@ -21,7 +20,7 @@ import moment from "moment";
 import "moment-timezone";
 
 import { deployCommands } from "./interactions/deploy-commands";
-import { buttons, commands } from "./interactions/interactions";
+import { buttons } from "./interactions/interactions";
 
 import { events, eventsRolesChanged } from "./events/events";
 
@@ -76,6 +75,10 @@ client.on(
         oldMember: GuildMember | PartialGuildMember,
         newMember: GuildMember
     ): Promise<void> => {
+        // Fully load the member
+        oldMember = await oldMember.guild.members.fetch(oldMember.id);
+        newMember = await newMember.guild.members.fetch(newMember.id);
+
         // Check if roles have been added
         if (oldMember.roles.cache.size < newMember.roles.cache.size) {
             const addedRoles = newMember.roles.cache.filter(
@@ -105,9 +108,6 @@ client.on(
     "interactionCreate",
     async (interaction: Interaction<CacheType>): Promise<void> => {
         switch (interaction.type) {
-            case InteractionType.ApplicationCommand:
-                handleCommand(interaction);
-                break;
             case InteractionType.MessageComponent:
                 if (interaction.isButton()) handleButton(interaction);
                 break;
@@ -131,18 +131,6 @@ function handleButton(interaction: ButtonInteraction<CacheType>): void {
 
     if (customId in buttons) {
         buttons[customId as keyof typeof buttons].execute(interaction);
-    }
-}
-
-/**
- * Handle command interactions
- * @param interaction The interaction to handle
- */
-function handleCommand(interaction: CommandInteraction<CacheType>): void {
-    const { commandName } = interaction;
-
-    if (commands[commandName as keyof typeof commands]) {
-        commands[commandName as keyof typeof commands].execute(interaction);
     }
 }
 
